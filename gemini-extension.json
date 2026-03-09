@@ -1,0 +1,23 @@
+{
+  "name": "hubspot-mcp",
+  "version": "1.0.0",
+  "contextFileName": "GEMINI.md",
+  "mcpServers": {
+    "hubspot": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@hubspot/mcp-server"
+      ],
+      "env": {
+        "HUBSPOT_PRIVATE_APP_ACCESS_TOKEN": "${user:HUBSPOT_PRIVATE_APP_ACCESS_TOKEN}"
+      },
+      "userSettings": {
+        "HUBSPOT_PRIVATE_APP_ACCESS_TOKEN": {
+          "description": "Your HubSpot Private App Access Token. Create one at: HubSpot Settings > Integrations > Private Apps",
+          "sensitive": true
+        }
+      }
+    }
+  }
+}
