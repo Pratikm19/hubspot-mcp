@@ -7,7 +7,7 @@ Powered by the [official HubSpot MCP server](https://developers.hubspot.com/mcp)
 ## Install
 
 ```bash
-gemini extensions install https://github.com/YOUR_USERNAME/hubspot-mcp
+gemini extensions install https://github.com/Pratikm19/hubspot-mcp
 ```
 
 You will be prompted for your HubSpot Private App Access Token on first run.
