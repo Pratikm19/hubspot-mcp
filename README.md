@@ -10,9 +10,11 @@ Powered by the [official HubSpot MCP server](https://developers.hubspot.com/mcp)
 gemini extensions install https://github.com/Pratikm19/hubspot-mcp
 ```
 
-You will be prompted for your HubSpot Private App Access Token on first run.
+## Setup
 
-## Setup: Get your access token
+After installing, you need to add your HubSpot Private App token to the extension config.
+
+### 1. Get your access token
 
 1. Go to **HubSpot Settings > Integrations > Private Apps**
 2. Click **Create a private app**
@@ -21,20 +23,54 @@ You will be prompted for your HubSpot Private App Access Token on first run.
    - `crm.objects.contacts.read` + `write`
    - `crm.objects.deals.read` + `write`
    - `crm.objects.companies.read` + `write`
-5. Click **Create app** and copy the access token
-6. Paste it when prompted for `HUBSPOT_PRIVATE_APP_ACCESS_TOKEN`
+5. Click **Create app** and copy the token (starts with `pat-`)
+
+### 2. Add the token to the extension config
+
+Open this file:
+
+**Mac/Linux:** `~/.gemini/extensions/hubspot-mcp/gemini-extension.json`
+
+**Windows:** `C:\Users\YOUR_NAME\.gemini\extensions\hubspot-mcp\gemini-extension.json`
+
+Replace `your-token-here` with your actual token:
+
+```json
+{
+  "name": "hubspot-mcp",
+  "version": "1.0.1",
+  "contextFileName": "GEMINI.md",
+  "mcpServers": {
+    "hubspot": {
+      "command": "npx",
+      "args": ["-y", "@hubspot/mcp-server"],
+      "env": {
+        "PRIVATE_APP_ACCESS_TOKEN": "pat-your-token-here"
+      }
+    }
+  }
+}
+```
+
+### 3. Restart Gemini CLI and verify
+
+```
+/mcp list
+```
+
+You should see `🟢 hubspot - Ready (21 tools)`.
 
 ## Example prompts
 
 ```
-> show me all open deals
-> find the contact for john@acme.com
-> what deals are closing this month?
-> create a contact for Sarah Chen at Stripe, email sarah@stripe.com
-> move the Acme Corp deal to Proposal stage
-> show me contacts created in the last 7 days with no owner
-> log a note on the TechCorp deal: "Follow up call booked for Friday"
-> summarise all deals over $10k in the Decision stage
+show me my open deals
+find the contact for john@acme.com
+what deals are closing this month?
+create a contact for Sarah Chen at Stripe, email sarah@stripe.com
+move the Acme Corp deal to Proposal stage
+show me contacts created in the last 7 days with no owner
+log a note on the TechCorp deal: "Follow up call booked for Friday"
+summarise all deals over $10k in the Decision stage
 ```
 
 ## Requirements
