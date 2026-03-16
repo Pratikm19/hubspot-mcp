@@ -1,0 +1,52 @@
+{
+  "_comment": "Multi-portal config for RevOps consultants. One block per client portal. Switch between them by updating PRIVATE_APP_ACCESS_TOKEN or running separate Claude Code / Gemini CLI sessions per client.",
+
+  "mcpServers": {
+
+    "hubspot-client-a": {
+      "command": "npx",
+      "args": ["-y", "@hubspot/mcp-server"],
+      "env": {
+        "PRIVATE_APP_ACCESS_TOKEN": "pat-client-a-token-here"
+      }
+    },
+
+    "hubspot-client-b": {
+      "command": "npx",
+      "args": ["-y", "@hubspot/mcp-server"],
+      "env": {
+        "PRIVATE_APP_ACCESS_TOKEN": "pat-client-b-token-here"
+      }
+    },
+
+    "hubspot-client-c": {
+      "command": "npx",
+      "args": ["-y", "@hubspot/mcp-server"],
+      "env": {
+        "PRIVATE_APP_ACCESS_TOKEN": "pat-client-c-token-here"
+      }
+    }
+
+  },
+
+  "_usage": {
+    "single_portal": "Keep one mcpServers block, delete the rest.",
+    "multi_portal": "Add one block per client. Each block needs its own Private App token from that client's HubSpot portal.",
+    "naming": "Name each server descriptively e.g. hubspot-acme, hubspot-techcorp. This is what your AI agent will reference when you ask it to switch portals.",
+    "switching": "Tell your agent: 'Use hubspot-client-b for this query' and it will route to that portal automatically.",
+    "security": "Never commit real tokens to git. Use a .env file or secret manager and reference with $ENV_VAR syntax."
+  },
+
+  "_env_var_pattern": {
+    "_comment": "Recommended pattern — store tokens in .env, reference here",
+    "mcpServers": {
+      "hubspot-client-a": {
+        "command": "npx",
+        "args": ["-y", "@hubspot/mcp-server"],
+        "env": {
+          "PRIVATE_APP_ACCESS_TOKEN": "${HUBSPOT_CLIENT_A_TOKEN}"
+        }
+      }
+    }
+  }
+}
