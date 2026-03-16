@@ -1,0 +1,68 @@
+# ICP Prospecting Run
+
+**Goal:** Find your best-fit unworked leads in one pass.
+**Replaces:** Manual list building, CRM archaeology, and guessing who to call next.
+**Pipeline OS module:** M12 — ICP Scoring Engine
+
+---
+
+## The Workflow
+
+Run this before any outbound session. Takes 10 minutes. Gives you a qualified list to work.
+
+---
+
+### Step 1 — Find unowned leads in your ICP
+```
+show me all contacts with the job title VP, Director, or Head of at companies with more than 50 employees that have no owner assigned
+```
+**What to look for:** High-fit contacts slipping through the cracks. These should have an owner within 24 hours.
+
+---
+
+### Step 2 — Surface companies with no open deal
+```
+show me all companies in the [your target industry] industry with more than 50 employees and no associated open deal
+```
+**What to look for:** Companies that fit your ICP but have never been worked. Your next best prospects are already in your CRM.
+
+---
+
+### Step 3 — Find engaged contacts with no deal
+```
+show me all contacts who have opened an email in the last 14 days but have no associated deal
+```
+**What to look for:** People who are warm right now. These get contacted today, not next week.
+
+---
+
+### Step 4 — Check multi-contact companies
+```
+show me all companies with more than 3 associated contacts but no open deal
+```
+**What to look for:** Companies where multiple people know you but nobody has been properly worked. High conversion potential.
+
+---
+
+### Step 5 — Revisit closed lost with fresh timing
+```
+show me all companies with a closed lost deal from more than 6 months ago with no activity since
+```
+**What to look for:** Deals lost to timing, budget, or a different decision maker. 6 months is long enough for the situation to have changed.
+
+---
+
+## Output
+
+By the end of this you have a tiered prospect list:
+- Tier 1: Engaged now, no deal — contact today
+- Tier 2: ICP fit, never worked — start a sequence
+- Tier 3: Closed lost, cold — add to nurture
+
+---
+
+## Want this running automatically?
+
+Pipeline OS M12 — ICP Scoring Engine scores every contact and company in your HubSpot against your ICP criteria automatically, surfaces the top prospects weekly, and routes them into sequences without manual intervention.
+
+→ [Learn more about Pipeline OS](https://github.com/Pratikm19/hubspot-mcp)
