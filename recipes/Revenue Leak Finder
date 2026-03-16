@@ -1,5 +1,4 @@
 # Revenue Leak Finder
-
 **Goal:** Surface where pipeline is silently disappearing.
 **Replaces:** End of quarter panic when the numbers don't add up.
 **Pipeline OS module:** M13 — Pipeline Hygiene Engine
@@ -14,23 +13,25 @@ Run this monthly. The leaks are always there — this makes them visible.
 
 ### Step 1 — Find backwards-moving deals
 ```
-show me all deals that were moved backwards in stage in the last 30 days
+show me all HubSpot deals where hs_date_entered_[current stage] is after hs_date_exited_[previous stage] and dealstage is not closedwon or closedlost
 ```
+Note: HubSpot doesn't expose stage regression directly via MCP. Use this as a starting point and filter manually if needed.
+
 **What to look for:** Any deal moving backwards is a signal — either the qualification was wrong, or something broke in the process. Pattern of backwards movement = process problem.
 
 ---
 
 ### Step 2 — Catch the demo-no-deal gap
 ```
-show me all contacts who requested a demo or were marked as demo completed but have no associated deal created
+show me all HubSpot contacts where hs_lead_status is connected and num_associated_deals is 0
 ```
-**What to look for:** Leads falling between marketing and sales. Demo happened, deal was never created. This is pure revenue leak.
+**What to look for:** Leads falling between marketing and sales. Conversation happened, deal was never created. This is pure revenue leak.
 
 ---
 
 ### Step 3 — Find closed lost with no reason
 ```
-show me all deals closed lost in the last 90 days with no loss reason recorded
+show me all HubSpot deals where dealstage is closedlost and hs_closed_lost_reason is not set and createdate is after [YYYY-MM-DD, 90 days ago]
 ```
 **What to look for:** Every closed lost deal with no reason recorded is a missed learning and a data quality problem. You can't fix what you can't see.
 
@@ -38,7 +39,7 @@ show me all deals closed lost in the last 90 days with no loss reason recorded
 
 ### Step 4 — Flag the slipping close dates
 ```
-show me all deals where the close date has been pushed more than twice
+show me all HubSpot deals where hs_num_times_contacted is greater than 2 and closedate is before [today's date as YYYY-MM-DD] and dealstage is not closedwon or closedlost
 ```
 **What to look for:** Deals being pushed repeatedly are either zombie deals or deals with a fundamental blocker that hasn't been addressed. Both need a decision.
 
@@ -46,14 +47,13 @@ show me all deals where the close date has been pushed more than twice
 
 ### Step 5 — Surface the ghost companies
 ```
-show me all companies with no activity from any associated contact in the last 60 days
+show me all HubSpot companies where notes_last_updated is before [YYYY-MM-DD, 60 days ago]
 ```
 **What to look for:** Entire accounts going dark. Could be churn risk, could be a contact who left, could be a deal that died quietly. All worth a check.
 
 ---
 
 ## Output
-
 By the end of this you have a revenue leak report:
 - Process gaps — where leads are falling out
 - Data quality issues — what's missing from your CRM
@@ -65,7 +65,6 @@ Run this with a client and they will immediately understand why they need Pipeli
 ---
 
 ## Want this running automatically?
-
 Pipeline OS M13 — Pipeline Hygiene Engine runs leak detection on a schedule, flags issues as HubSpot tasks, and gives you a weekly revenue leak score so problems surface before they compound.
 
 → [Learn more about Pipeline OS](https://github.com/Pratikm19/hubspot-mcp)
