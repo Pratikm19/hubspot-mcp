@@ -1,5 +1,4 @@
 # Pre-QBR Client Audit
-
 **Goal:** Everything you need before a client quarterly business review — in 15 minutes.
 **Replaces:** Half a day of pulling reports, cross-referencing spreadsheets, and chasing down activity logs.
 **Pipeline OS module:** M10 — Customer Lifecycle Engine
@@ -14,7 +13,7 @@ Run these prompts in order before every QBR.
 
 ### Step 1 — Get the account snapshot
 ```
-show me the company record for [Client Name] including all associated contacts, open deals, and recent activity
+show me the HubSpot company record for [Client Name] including all associated contacts and open deals
 ```
 **What to look for:** Who's active, who's gone quiet, what deals are open. Sets the baseline for everything that follows.
 
@@ -22,23 +21,23 @@ show me the company record for [Client Name] including all associated contacts, 
 
 ### Step 2 — Check recent touchpoints
 ```
-show me all activity logged on [Client Name] in the last 90 days including calls, emails, and notes
+show me all HubSpot engagements associated with [Client Name] where createdate is after [YYYY-MM-DD, 90 days ago]
 ```
 **What to look for:** Gaps in activity. If there's a 30+ day window with nothing logged, that's a risk to flag in the QBR.
 
 ---
 
-### Step 3 — Surface open issues
+### Step 3 — Surface open tasks
 ```
-show me all open tickets or tasks associated with [Client Name]
+show me all open HubSpot tasks associated with [Client Name]
 ```
 **What to look for:** Anything unresolved. You don't want a client bringing up an open issue you didn't know about mid-QBR.
 
 ---
 
-### Step 4 — Find the expansion signals
+### Step 4 — Find expansion signals
 ```
-show me all contacts at [Client Name] who have engaged in the last 30 days but have no associated deal
+show me all HubSpot contacts at [Client Name] where hs_email_last_open_date is after [YYYY-MM-DD, 30 days ago] and num_associated_deals is 0
 ```
 **What to look for:** Engaged contacts outside the main deal — potential expansion into new teams or departments.
 
@@ -46,18 +45,17 @@ show me all contacts at [Client Name] who have engaged in the last 30 days but h
 
 ### Step 5 — Check renewal status
 ```
-show me all deals associated with [Client Name] that are in a renewal or upsell stage
+show me all HubSpot deals associated with [Client Name] where dealstage is not closedwon or closedlost
 ```
 **What to look for:** What's in play, what's the value, what's the close date. Know this before you walk into the room.
 
 ---
 
 ## Output
-
 By the end of this you have:
 - Full account context
 - A timeline of recent activity
-- Open issues to address
+- Open tasks to address
 - Expansion opportunities to raise
 - Renewal status
 
@@ -66,7 +64,6 @@ Walk into the QBR knowing more than your client expects you to.
 ---
 
 ## Want this running automatically?
-
 Pipeline OS M10 — Customer Lifecycle Engine tracks lifecycle stage, expansion signals, and renewal timing automatically across all accounts, and surfaces QBR briefs on a schedule.
 
 → [Learn more about Pipeline OS](https://github.com/Pratikm19/hubspot-mcp)
