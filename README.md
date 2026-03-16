@@ -1,45 +1,55 @@
-# HubSpot MCP Extension for Gemini CLI
+# HubSpot MCP for Gemini CLI + Claude Code
 
-Connect Gemini CLI to your HubSpot CRM. Read contacts, query deals, update records, and analyse your pipeline — all from the terminal.
+Talk to your HubSpot CRM from the terminal. Read, write, and automate — in plain English.
 
-Powered by the [official HubSpot MCP server](https://developers.hubspot.com/mcp).
+Built for RevOps practitioners who live in the terminal and want their CRM to keep up.
+
+```
+show me all deals with no activity in the last 14 days
+find contacts from SaaS companies with 50+ employees and no open deal
+which deals have been in the same stage for more than 21 days
+move the Acme Corp deal to Proposal stage
+log a note on the TechCorp deal: "Follow up call booked for Friday"
+```
+
+---
+
+## Why this exists
+
+HubSpot's native Gemini connector is read-only, UI-based, and requires a paid Google Workspace plan. It's built for sales reps inside Gmail.
+
+This is built for the person who built the CRM.
+
+- **Read + write** — query, create, update, log notes, move deals
+- **Terminal-native** — stays in your workflow, no context switching
+- **Practitioner-built** — 35 RevOps prompts included, mapped to real use cases
+- **Multi-portal ready** — manage multiple client portals from one config
+- **Logic layer included** — skills and recipes organised by job to be done, not API structure
+- **Free** — just needs a HubSpot Private App token
+
+---
+
+## Works with
+
+- [Gemini CLI](https://github.com/google-gemini/gemini-cli) — install as an extension
+- [Claude Code](https://claude.ai/code) — add to your MCP config
+
+---
 
 ## Install
+
+### Gemini CLI
 
 ```bash
 gemini extensions install https://github.com/Pratikm19/hubspot-mcp
 ```
 
-## Setup
+### Claude Code
 
-After installing, you need to add your HubSpot Private App token to the extension config.
-
-### 1. Get your access token
-
-1. Go to **HubSpot Settings > Integrations > Private Apps**
-2. Click **Create a private app**
-3. Name it (e.g. "Gemini CLI")
-4. Set scopes:
-   - `crm.objects.contacts.read` + `write`
-   - `crm.objects.deals.read` + `write`
-   - `crm.objects.companies.read` + `write`
-5. Click **Create app** and copy the token (starts with `pat-`)
-
-### 2. Add the token to the extension config
-
-Open this file:
-
-**Mac/Linux:** `~/.gemini/extensions/hubspot-mcp/gemini-extension.json`
-
-**Windows:** `C:\Users\YOUR_NAME\.gemini\extensions\hubspot-mcp\gemini-extension.json`
-
-Replace `your-token-here` with your actual token:
+Add to your `claude_desktop_config.json` (Mac: `~/.claude/claude_desktop_config.json`):
 
 ```json
 {
-  "name": "hubspot-mcp",
-  "version": "1.0.1",
-  "contextFileName": "GEMINI.md",
   "mcpServers": {
     "hubspot": {
       "command": "npx",
@@ -52,38 +62,131 @@ Replace `your-token-here` with your actual token:
 }
 ```
 
-### 3. Restart Gemini CLI and verify
+---
 
+## Setup (both clients)
+
+**1. Create a HubSpot Private App**
+
+- Go to HubSpot Settings → Integrations → Private Apps
+- Click Create a private app
+- Name it (e.g. "Gemini CLI" or "Claude Code")
+- Set scopes:
+  - `crm.objects.contacts.read` + `write`
+  - `crm.objects.deals.read` + `write`
+  - `crm.objects.companies.read` + `write`
+- Copy the token (starts with `pat-`)
+
+**2. Add your token**
+
+Replace `pat-your-token-here` in your config with the actual token.
+
+**3. Restart your client and verify**
+
+Gemini CLI:
 ```
 /mcp list
 ```
-
 You should see `🟢 hubspot - Ready (21 tools)`.
 
-## Example prompts
+Claude Code: the HubSpot tools will appear automatically in your next session.
 
+---
+
+## Multi-portal setup (for consultants)
+
+Managing multiple client portals? See [`multi-portal-config.json`](./multi-portal-config.json) for the full pattern.
+
+Each client gets their own block with their own Private App token:
+
+```json
+{
+  "mcpServers": {
+    "hubspot-client-a": {
+      "command": "npx",
+      "args": ["-y", "@hubspot/mcp-server"],
+      "env": {
+        "PRIVATE_APP_ACCESS_TOKEN": "pat-client-a-token"
+      }
+    },
+    "hubspot-client-b": {
+      "command": "npx",
+      "args": ["-y", "@hubspot/mcp-server"],
+      "env": {
+        "PRIVATE_APP_ACCESS_TOKEN": "pat-client-b-token"
+      }
+    }
+  }
+}
 ```
-show me my open deals
-find the contact for john@acme.com
-what deals are closing this month?
-create a contact for Sarah Chen at Stripe, email sarah@stripe.com
-move the Acme Corp deal to Proposal stage
-show me contacts created in the last 7 days with no owner
-log a note on the TechCorp deal: "Follow up call booked for Friday"
-summarise all deals over $10k in the Decision stage
-```
+
+Then tell your agent: *"Use hubspot-client-b for this query"* and it routes automatically.
+
+> Never commit real tokens to git. Use a `.env` file and reference with `${ENV_VAR}` syntax.
+
+---
+
+## RevOps Skill Library
+
+See [`SKILL.md`](./SKILL.md) for 35 practitioner-built prompts organised by use case:
+
+- Pipeline Health
+- ICP Qualification
+- Churn & Lifecycle
+- Prospecting & Outbound
+- Deal Reviews & Forecasting
+- Revenue Leak Detection
+- Quick CRM Actions
+
+Each prompt maps to a [Pipeline OS](https://github.com/Pratikm19/hubspot-mcp) module — the full HubSpot-native RevOps automation suite these workflows are extracted from.
+
+---
+
+## Why the logic layer matters
+
+MCP tools give you the connection. Skills give you the intelligence.
+
+HubSpot's official MCP server exposes the API actions — list, query, update. But it has no opinion about what to do with them. A RevOps practitioner landing on raw MCP tools has no idea where to start.
+
+This repo is the logic layer on top. Prompts and workflows built by a practitioner, not generated by AI — organised around how RevOps teams actually work, not how the API is structured.
+
+The CLI is where this matters most. It's where technical practitioners live. This repo is built for that workflow.
+
+---
 
 ## Requirements
 
-- [Gemini CLI](https://github.com/google-gemini/gemini-cli) installed
+- Gemini CLI or Claude Code installed
 - Node.js 18+
 - A HubSpot account with Private App access
 
+---
+
 ## Built on
 
-- [HubSpot MCP Server](https://www.npmjs.com/package/@hubspot/mcp-server) (official)
-- [Gemini CLI Extensions](https://geminicli.com/docs/extensions/)
+- [HubSpot MCP Server](https://github.com/HubSpot/mcp-server) (official)
+- [Gemini CLI Extensions](https://github.com/google-gemini/gemini-cli)
+- [Pipeline OS](https://github.com/Pratikm19/hubspot-mcp) — HubSpot-native RevOps for B2B SaaS
+
+---
+
+## Work with me
+
+These workflows run from your terminal today. If you want them running automatically inside your HubSpot — as live properties, workflows, and triggers your team owns forever — that's what I build.
+
+I'm a RevOps consultant specialising in HubSpot-native automation for B2B SaaS teams. Fixed-price sprints. No lock-in. You own everything at the end.
+
+→ [Book a free 30-min call](https://cal.com/pratik-mehta1/30min)
+→ [See the Pipeline OS sprint offer](https://pratikmehta.co)
+
+Open to full-time RevOps, GTM, and HubSpot roles at B2B SaaS companies. [Connect on LinkedIn](https://www.linkedin.com/in/pratik-mehta1).
+
+---
 
 ## License
 
 MIT
+
+---
+
+*Built by [Pratik Mehta](https://www.linkedin.com/in/pratik-mehta1) — RevOps and GTM consultant specialising in HubSpot-native automation for B2B SaaS.*
