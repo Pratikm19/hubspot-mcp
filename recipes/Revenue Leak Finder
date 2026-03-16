@@ -1,0 +1,71 @@
+# Revenue Leak Finder
+
+**Goal:** Surface where pipeline is silently disappearing.
+**Replaces:** End of quarter panic when the numbers don't add up.
+**Pipeline OS module:** M13 — Pipeline Hygiene Engine
+
+---
+
+## The Workflow
+
+Run this monthly. The leaks are always there — this makes them visible.
+
+---
+
+### Step 1 — Find backwards-moving deals
+```
+show me all deals that were moved backwards in stage in the last 30 days
+```
+**What to look for:** Any deal moving backwards is a signal — either the qualification was wrong, or something broke in the process. Pattern of backwards movement = process problem.
+
+---
+
+### Step 2 — Catch the demo-no-deal gap
+```
+show me all contacts who requested a demo or were marked as demo completed but have no associated deal created
+```
+**What to look for:** Leads falling between marketing and sales. Demo happened, deal was never created. This is pure revenue leak.
+
+---
+
+### Step 3 — Find closed lost with no reason
+```
+show me all deals closed lost in the last 90 days with no loss reason recorded
+```
+**What to look for:** Every closed lost deal with no reason recorded is a missed learning and a data quality problem. You can't fix what you can't see.
+
+---
+
+### Step 4 — Flag the slipping close dates
+```
+show me all deals where the close date has been pushed more than twice
+```
+**What to look for:** Deals being pushed repeatedly are either zombie deals or deals with a fundamental blocker that hasn't been addressed. Both need a decision.
+
+---
+
+### Step 5 — Surface the ghost companies
+```
+show me all companies with no activity from any associated contact in the last 60 days
+```
+**What to look for:** Entire accounts going dark. Could be churn risk, could be a contact who left, could be a deal that died quietly. All worth a check.
+
+---
+
+## Output
+
+By the end of this you have a revenue leak report:
+- Process gaps — where leads are falling out
+- Data quality issues — what's missing from your CRM
+- At-risk deals — what needs a decision now
+- Ghost accounts — what needs a human check
+
+Run this with a client and they will immediately understand why they need Pipeline OS.
+
+---
+
+## Want this running automatically?
+
+Pipeline OS M13 — Pipeline Hygiene Engine runs leak detection on a schedule, flags issues as HubSpot tasks, and gives you a weekly revenue leak score so problems surface before they compound.
+
+→ [Learn more about Pipeline OS](https://github.com/Pratikm19/hubspot-mcp)
