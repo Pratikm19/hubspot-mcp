@@ -5,11 +5,11 @@ Talk to your HubSpot CRM from the terminal. Read, write, and automate — in pla
 Built for RevOps practitioners who live in the terminal and want their CRM to keep up.
 
 ```
-show me all deals with no activity in the last 14 days
-find contacts from SaaS companies with 50+ employees and no open deal
-which deals have been in the same stage for more than 21 days
-move the Acme Corp deal to Proposal stage
-log a note on the TechCorp deal: "Follow up call booked for Friday"
+show me all HubSpot deals where notes_last_updated is before 2026-03-01 and dealstage is not closedwon or closedlost
+find all HubSpot contacts where lifecyclestage is customer and notes_last_updated is before 2026-02-15
+show me all HubSpot deals in appointmentscheduled stage
+log a note on HubSpot deal ID 262823700971: "Follow up call booked for Friday"
+show me all HubSpot deals where num_associated_contacts is 0 and dealstage is not closedwon or closedlost
 ```
 
 ---
@@ -46,7 +46,9 @@ gemini extensions install https://github.com/Pratikm19/hubspot-mcp
 
 ### Claude Code
 
-Add to your `claude_desktop_config.json` (Mac: `~/.claude/claude_desktop_config.json`):
+**Mac** — add to `~/.claude/claude_desktop_config.json`:
+
+**Windows** — add to `%USERPROFILE%\.claude.json` (not `claude_desktop_config.json`):
 
 ```json
 {
@@ -90,6 +92,41 @@ Gemini CLI:
 You should see `🟢 hubspot - Ready (21 tools)`.
 
 Claude Code: the HubSpot tools will appear automatically in your next session.
+
+---
+
+## Windows users — read this first
+
+A few gotchas that will save you an hour:
+
+**1. Config file location**
+
+Claude Code on Windows reads from `%USERPROFILE%\.claude.json` — not `claude_desktop_config.json`. Open it with:
+```powershell
+notepad $env:USERPROFILE\.claude.json
+```
+
+**2. Token key name**
+
+The extension file uses `HUBSPOT_PRIVATE_APP_ACCESS_TOKEN` as the key name but the HubSpot MCP server expects `PRIVATE_APP_ACCESS_TOKEN`. If the connection shows 🔴 Disconnected, this is why. Open your `gemini-extension.json` and make sure the env block uses:
+```json
+"PRIVATE_APP_ACCESS_TOKEN": "pat-your-token-here"
+```
+
+**3. Hardcode your token**
+
+The `${user:HUBSPOT_PRIVATE_APP_ACCESS_TOKEN}` userSettings syntax is unreliable on Windows. Paste your token directly into the env block instead.
+
+**4. Always say "HubSpot" in your prompts**
+
+Gemini CLI is aware of all your connected extensions. If you say "show me all contacts" it may pull from Google Contacts or other sources. Always say "show me all HubSpot contacts" to route correctly.
+
+**5. Use deal IDs for write operations**
+
+When logging notes, moving deals, or updating properties — use the deal ID rather than the deal name. Deal name lookups trigger an owner resolution chain that adds 1-2 minutes of latency. Deal ID goes straight to the operation.
+```
+log a note on HubSpot deal ID 262823700971: "your note here"
+```
 
 ---
 
