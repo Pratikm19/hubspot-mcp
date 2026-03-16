@@ -1,0 +1,65 @@
+# Churn Early Warning Scan
+
+**Goal:** Catch at-risk customers before they cancel.
+**Replaces:** Waiting for a customer to go quiet and only noticing when it's too late.
+**Pipeline OS module:** M10 — Customer Lifecycle Engine
+
+---
+
+## The Workflow
+
+Run this scan weekly. Takes 10 minutes. Saves accounts.
+
+---
+
+### Step 1 — Find the silent customers
+```
+show me all customers with no activity logged in the last 30 days
+```
+**What to look for:** Any customer account with zero touchpoints in a month is at risk. Silence is the earliest churn signal.
+
+---
+
+### Step 2 — Check lifecycle stage stagnation
+```
+show me all contacts in the Customer lifecycle stage whose stage has not changed in 60 days
+```
+**What to look for:** Customers who haven't progressed — no upsell, no renewal conversation started, no expansion. Stagnation precedes churn.
+
+---
+
+### Step 3 — Flag the long-term customers with no recent deal
+```
+show me all companies with a closed won deal older than 6 months and no open renewal or upsell deal
+```
+**What to look for:** These are your most exposed accounts. Revenue sitting with no active conversation is revenue at risk.
+
+---
+
+### Step 4 — Surface open tickets with no sales touchpoint
+```
+show me all companies with an open support ticket and no sales activity in the last 30 days
+```
+**What to look for:** Customers who are frustrated enough to raise a ticket but haven't heard from their rep. Classic pre-churn pattern.
+
+---
+
+### Step 5 — Check for disengaged contacts
+```
+show me all primary contacts at customer accounts who have not opened an email or logged any activity in the last 45 days
+```
+**What to look for:** Contact-level disengagement. The company might look fine but if your champion has gone quiet, that's a problem.
+
+---
+
+## Output
+
+By the end of this you have a prioritised list of at-risk accounts ranked by signal strength. Act on the top 5 before the week is out.
+
+---
+
+## Want this running automatically?
+
+Pipeline OS M10 — Customer Lifecycle Engine monitors these signals continuously, scores accounts by churn risk, and triggers CS tasks automatically when thresholds are crossed.
+
+→ [Learn more about Pipeline OS](https://github.com/Pratikm19/hubspot-mcp)
