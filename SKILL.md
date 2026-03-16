@@ -10,19 +10,19 @@ Built on [Pipeline OS](https://github.com/Pratikm19/hubspot-mcp) — a HubSpot-n
 Spot deals going cold before they die quietly.
 
 ```
-show me all deals with no activity in the last 14 days
+show me all HubSpot deals where notes_last_updated is before [14 days ago date as YYYY-MM-DD] and dealstage is not closedwon or closedlost
 ```
 ```
-which deals have been in the same stage for more than 21 days
+show me all HubSpot deals in [stage name] stage
 ```
 ```
-what is my total pipeline value broken down by stage
+what is my total HubSpot pipeline value broken down by stage
 ```
 ```
-show me all deals with a close date in the past that are still open
+show me all HubSpot deals where closedate is before today and dealstage is not closedwon or closedlost
 ```
 ```
-which deals have no next step or follow-up task assigned
+show me all HubSpot deals where num_notes is 0 and dealstage is not closedwon or closedlost
 ```
 
 ---
@@ -32,19 +32,19 @@ which deals have no next step or follow-up task assigned
 Find your best-fit prospects. Ignore the rest.
 
 ```
-find all contacts from companies with more than 50 employees where the deal stage is New Lead
+find all HubSpot contacts from companies with more than 50 employees where lifecyclestage is lead
 ```
 ```
-show me all companies in the SaaS industry with no associated deal
+show me all HubSpot companies in the SaaS industry with no associated deal
 ```
 ```
-find contacts with the job title VP or Director who have no owner assigned
+find HubSpot contacts with job title containing VP or Director where hubspot_owner_id is not set
 ```
 ```
-show me leads created in the last 30 days that have never been contacted
+show me HubSpot leads created in the last 30 days where num_contacted_notes is 0
 ```
 ```
-which companies have more than 3 contacts but no open deal
+which HubSpot companies have more than 3 contacts but no open deal
 ```
 
 ---
@@ -54,19 +54,19 @@ which companies have more than 3 contacts but no open deal
 Know who is slipping before they send the cancellation email.
 
 ```
-show me all customers with no activity logged in the last 30 days
+show me all HubSpot contacts where lifecyclestage is customer and notes_last_updated is before [30 days ago date as YYYY-MM-DD]
 ```
 ```
-which contacts have been in the Customer lifecycle stage for more than 90 days with no upsell deal
+which HubSpot contacts have been in the customer lifecycle stage for more than 90 days with no upsell deal
 ```
 ```
-find all deals in the Closed Won stage where the close date was more than 6 months ago and no renewal deal exists
+find all HubSpot deals in closedwon stage where closedate was more than 6 months ago
 ```
 ```
-show me contacts whose lifecycle stage has not changed in 60 days
+show me HubSpot contacts where lifecyclestage has not changed in 60 days
 ```
 ```
-which customers have an open support ticket and no recent sales touchpoint
+which HubSpot customers have an open support ticket and no recent sales touchpoint
 ```
 
 ---
@@ -76,19 +76,19 @@ which customers have an open support ticket and no recent sales touchpoint
 Work smarter on outbound. Let the CRM tell you who to call.
 
 ```
-find all companies in [industry] with open deals under $10,000
+find all HubSpot companies in [industry] with open deals where amount is less than 10000
 ```
 ```
-show me my most engaged contacts in the last 14 days with no associated deal
+show me HubSpot contacts where hs_email_last_open_date is in the last 14 days and num_associated_deals is 0
 ```
 ```
-find all contacts who opened an email in the last 7 days but have no active sequence
+find all HubSpot contacts where hs_email_last_open_date is in the last 7 days
 ```
 ```
-which leads came from the [source] channel in the last 90 days with no follow-up
+show me HubSpot leads from [source] channel created in the last 90 days where notes_last_updated is null
 ```
 ```
-show me all contacts at companies where we have a closed lost deal in the last 6 months
+show me all HubSpot contacts at companies where we have a closedlost deal in the last 6 months
 ```
 
 ---
@@ -98,19 +98,19 @@ show me all contacts at companies where we have a closed lost deal in the last 6
 Run your pipeline review without pulling a single report manually.
 
 ```
-summarise all deals over $10,000 in the Proposal or Decision stage
+show me all HubSpot deals where amount is greater than 10000 and dealstage is presentationscheduled or decisionmakerboughtin
 ```
 ```
-what deals are closing this month and what is the total value
+show me HubSpot deals where closedate is this month and dealstage is not closedwon or closedlost
 ```
 ```
-show me deals where the amount has changed in the last 7 days
+show me HubSpot deals where hs_lastmodifieddate is in the last 7 days
 ```
 ```
-which deals have no associated contact or company
+show me all HubSpot deals where num_associated_contacts is 0
 ```
 ```
-show me my top 10 open deals by value with their current stage and last activity date
+show me my top 10 HubSpot open deals by amount with dealstage and notes_last_updated
 ```
 
 ---
@@ -120,19 +120,19 @@ show me my top 10 open deals by value with their current stage and last activity
 Find the gaps where pipeline silently disappears.
 
 ```
-show me all deals that were moved backwards in stage in the last 30 days
+show me all HubSpot deals that were moved backwards in stage in the last 30 days
 ```
 ```
-find contacts who requested a demo but have no associated deal created
+find HubSpot contacts where hs_last_sales_activity_type contains demo and num_associated_deals is 0
 ```
 ```
-which deals closed lost in the last 90 days with no loss reason recorded
+show me HubSpot deals where dealstage is closedlost and hs_closed_lost_reason is not set, created in the last 90 days
 ```
 ```
-show me all deals where the close date has been pushed more than twice
+show me all HubSpot deals where closedate has been modified more than twice
 ```
 ```
-find companies with no activity from any contact in the last 60 days
+find HubSpot companies where notes_last_updated is before [60 days ago date as YYYY-MM-DD]
 ```
 
 ---
@@ -142,20 +142,30 @@ find companies with no activity from any contact in the last 60 days
 Things you used to log by hand.
 
 ```
-create a contact for [Name] at [Company], email [email]
+create a HubSpot contact for [Name] at [Company], email [email]
 ```
 ```
-move the [Company] deal to [Stage] stage
+move HubSpot deal ID [deal_id] to [stage internal value] stage
 ```
 ```
-log a note on the [Company] deal: "[note text]"
+log a note on HubSpot deal ID [deal_id]: "[note text]"
 ```
 ```
-assign the [Company] deal to [owner name]
+assign HubSpot deal ID [deal_id] to owner [owner name]
 ```
 ```
-update the close date on the [Company] deal to [date]
+update the closedate on HubSpot deal ID [deal_id] to [YYYY-MM-DD]
 ```
+
+---
+
+## Tips for Best Results
+
+- Always say **"HubSpot"** in your prompt — prevents Gemini from pulling Google Contacts or other connected sources
+- Use **deal IDs** not deal names for write operations (move, log note, assign, update) — avoids slow owner lookup chains
+- Use **exact property names** where shown — prevents Gemini doing a property discovery pass before running your query
+- For date filters, provide the **exact date as YYYY-MM-DD** rather than relative terms like "last 14 days"
+- Key deal properties: `notes_last_updated` (last activity), `num_associated_contacts`, `num_notes`, `dealstage`, `closedate`, `amount`
 
 ---
 
@@ -174,6 +184,6 @@ Each skill set above maps to a Pipeline OS module. If you want the full automati
 
 → [Learn more about Pipeline OS](https://github.com/Pratikm19/hubspot-mcp)
 
----
+
 
 *Built by [Pratik Mehta](https://www.linkedin.com/in/pratikm19) — RevOps consultant specialising in HubSpot-native automation for B2B SaaS.*
