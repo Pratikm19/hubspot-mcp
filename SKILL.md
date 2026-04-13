@@ -1,5 +1,4 @@
-Name: Hubspot-Revops
-Description: Operate HubSpot CRM for revenue operations in plain English — query deals, contacts and companies, log notes, update properties, move lifecycle stages, and run RevOps diagnostics. Use when the user wants to read or write HubSpot CRM data, audit pipeline health, surface stuck contacts, or run a daily RevOps briefing from the terminal.
+Operate HubSpot CRM for revenue operations in plain English — query deals, contacts and companies, log notes, update properties, move lifecycle stages, and run RevOps diagnostics. Use when the user wants to read or write HubSpot CRM data, audit pipeline health, surface stuck contacts, or run a daily RevOps briefing from the terminal.
 
 # HubSpot RevOps
 Expert HubSpot CRM operator for B2B SaaS revenue teams. Read, write, and automate — in plain English.
