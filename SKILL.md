@@ -1,7 +1,23 @@
-# HubSpot RevOps Skill Library
+Hubspot-Revops
+Operate HubSpot CRM for revenue operations in plain English — query deals, contacts and companies, log notes, update properties, move lifecycle stages, and run RevOps diagnostics. Use when the user wants to read or write HubSpot CRM data, audit pipeline health, surface stuck contacts, or run a daily RevOps briefing from the terminal.
 
-A practitioner-built prompt library for HubSpot + Gemini CLI. 35 workflows. Copy, paste, run.
-Built on [Pipeline OS](https://github.com/Pratikm19/hubspot-mcp) — a HubSpot-native RevOps system for B2B SaaS teams.
+# HubSpot RevOps
+Expert HubSpot CRM operator for B2B SaaS revenue teams. Read, write, and automate — in plain English.
+
+Built on github.com/Pratikm19/hubspot-mcp — the first HubSpot connector in the Gemini CLI ecosystem. 35 RevOps prompts and 5 workflow recipes tested against live HubSpot portals. Compatible with Gemini CLI and Claude Code.
+
+---
+
+## What This Skill Does
+
+| Operation | Examples |
+|---|---|
+| Query deals | Stale deals, deals missing next steps, deals by stage |
+| Query contacts | Customers gone quiet, leads by lifecycle stage, contacts missing fields |
+| Write to CRM | Log notes, update properties, move lifecycle stages |
+| Pipeline health | Deal risk flags, push counts, missing contacts on deals |
+| Sequence audit | Step-level dropoff, reply rates, sequences to deactivate |
+| Morning briefing | Daily RevOps digest — pipeline, contacts, sequences in one output |
 
 ---
 
@@ -159,21 +175,49 @@ update the closedate on HubSpot deal ID [deal_id] to [YYYY-MM-DD]
 
 ---
 
+## RevOps Morning Briefing
+
+Run this once daily to get a full RevOps digest in under 60 seconds. Works as a scheduled Meerkats agent or manually from the terminal.
+
+**What it surfaces:**
+- Deals with no activity in 14+ days
+- Customers not contacted in 30+ days
+- Leads stuck in MQL for 30+ days
+- Deals closing this month with no next step
+- Sequences with 0 replies in the last 14 days
+
+```
+Run my HubSpot RevOps morning briefing — surface stale deals, quiet customers, stuck MQLs, and underperforming sequences. Output as a prioritised action list.
+```
+
+---
+
 ## Tips for Best Results
 
 - Always say **"HubSpot"** in your prompt — prevents Gemini from pulling Google Contacts or other connected sources
-- Use **deal IDs** not deal names for write operations (move, log note, assign, update) — avoids slow owner lookup chains
-- Use **exact property names** where shown — prevents Gemini doing a property discovery pass before running your query
+- Use **deal IDs** not deal names for write operations — avoids slow owner lookup chains
+- Use **exact property names** where shown — prevents a property discovery pass before running your query
 - For date filters, provide the **exact date as YYYY-MM-DD** rather than relative terms like "last 14 days"
-- Key deal properties: `notes_last_updated` (last activity), `num_associated_contacts`, `num_notes`, `dealstage`, `closedate`, `amount`
+- Key deal properties: `notes_last_updated`, `num_associated_contacts`, `num_notes`, `dealstage`, `closedate`, `amount`
+
+---
+
+## Combines With
+
+| Skill | Why |
+|---|---|
+| ColdIQ signal-sourcer | Signal fires in ColdIQ, action it in HubSpot via write operations |
+| ColdIQ clay-enrichment | Enrich in Clay, write results back to HubSpot contacts |
+| apollo-outbound | Source in Apollo, triage and qualify in HubSpot |
+| smartlead-outbound | Run sequences in Smartlead, sync outcomes back to HubSpot lifecycle stages |
 
 ---
 
 ## Pipeline OS Module Map
 
-Each skill set above maps to a Pipeline OS module. If you want the full automation layer — HubSpot properties, workflows, and write-back — built for your portal:
+Each prompt category maps to a Pipeline OS module — the full HubSpot-native automation layer.
 
-| Skill Set | Pipeline OS Module |
+| Prompt Category | Pipeline OS Module |
 |---|---|
 | Pipeline Health | M13 — Pipeline Hygiene Engine |
 | ICP Qualification | M12 — ICP Scoring Engine |
@@ -182,8 +226,6 @@ Each skill set above maps to a Pipeline OS module. If you want the full automati
 | Deal Reviews | M13 — Revenue Forecast Model |
 | Revenue Leak Detection | M10 — Revenue Leak Finder |
 
-→ [Learn more about Pipeline OS](https://github.com/Pratikm19/hubspot-mcp)
+---
 
-
-
-*Built by [Pratik Mehta](https://www.linkedin.com/in/pratikm19) — RevOps consultant specialising in HubSpot-native automation for B2B SaaS.*
+*Built by Pratik Mehta — github.com/Pratikm19/hubspot-mcp*
