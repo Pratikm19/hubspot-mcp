@@ -3,7 +3,7 @@
 **Replaces:** End of quarter panic when the numbers don't add up.
 **Pipeline OS module:** M13 — Pipeline Hygiene Engine
 ---
-Requires populated deal and contact history to return results.
+*Requires populated deal and contact history to return results.
 ---
 ---
 
