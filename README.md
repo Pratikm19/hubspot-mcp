@@ -149,7 +149,7 @@ When logging notes, moving deals, or updating properties — use the deal ID rat
 ```
 log a note on HubSpot deal ID 262823700971: "your note here"
 ```
-
+Best results on portals with 6+ months of activity data. See SKILL.md for testing status per category.
 ---
 
 ## Multi-portal setup (for consultants)
