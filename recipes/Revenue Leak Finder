@@ -3,7 +3,7 @@
 **Replaces:** End of quarter panic when the numbers don't add up.
 **Pipeline OS module:** M13 — Pipeline Hygiene Engine
 ---
-Best results on portals with 6+ months of activity data. See SKILL.md for testing status per category.
+Requires populated deal and contact history to return results.
 ---
 ---
 
