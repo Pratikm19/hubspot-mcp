@@ -2,6 +2,9 @@
 **Goal:** Find your best-fit unworked leads in one pass.
 **Replaces:** Manual list building, CRM archaeology, and guessing who to call next.
 **Pipeline OS module:** M12 — ICP Scoring Engine
+---
+Requires populated deal and contact history to return results
+---
 
 ---
 
