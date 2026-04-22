@@ -1,9 +1,32 @@
-Operate HubSpot CRM for revenue operations in plain English — query deals, contacts and companies, log notes, update properties, move lifecycle stages, and run RevOps diagnostics. Use when the user wants to read or write HubSpot CRM data, audit pipeline health, surface stuck contacts, or run a daily RevOps briefing from the terminal.
+---
+name: hubspot-revops
+description: Operate HubSpot CRM for revenue operations in plain English — query deals, contacts and companies, log notes, update properties, move lifecycle stages, and run RevOps diagnostics. Use when the user wants to read or write HubSpot CRM data, audit pipeline health, surface stuck contacts, or run a daily RevOps briefing from the terminal.
+---
 
 # HubSpot RevOps
+
 Expert HubSpot CRM operator for B2B SaaS revenue teams. Read, write, and automate — in plain English.
 
-Built on github.com/Pratikm19/hubspot-mcp — the first HubSpot connector in the Gemini CLI ecosystem. 35 RevOps prompts and 5 workflow recipes tested against live HubSpot portals. Compatible with Gemini CLI and Claude Code.
+Built on github.com/Pratikm19/hubspot-mcp — the first HubSpot connector in the Gemini CLI ecosystem. 35 RevOps prompts and 5 workflow recipes. Compatible with Gemini CLI and Claude Code.
+
+---
+
+## Testing status and data requirements
+
+| Category | Status | Notes |
+|---|---|---|
+| Pipeline Health | Tested | Pipeline by stage, stale deals, overdue close dates confirmed working |
+| Quick CRM Actions | Tested | Read contacts, read deals, log notes, move deals confirmed end to end |
+| Deal Reviews and Forecasting | Partially tested | Deals by stage and no-contact deals confirmed. Amount and close date queries need populated data |
+| ICP Qualification | Syntax validated | jobtitle filter works structurally — requires contacts imported with job title field populated |
+| Churn and Lifecycle | Syntax validated | Customer lifecycle query confirmed. Full churn scan requires 6+ months of activity data |
+| Prospecting and Outbound | Syntax validated | Requires populated email activity and sequence data to return results |
+| Revenue Leak Detection | Syntax validated | Closed lost reason query confirmed. Stage regression and push queries require deal history |
+| Morning Briefing | Partial | Stale deals and quiet customers work. Sequences not exposed via HubSpot MCP — will return empty |
+
+**Best results on portals with 6+ months of activity data.** Empty results on fresh or sparse portals indicate a data gap, not a prompt error.
+
+Contributions welcome — if you test a prompt and it works or fails, open an issue or PR.
 
 ---
 
@@ -16,7 +39,7 @@ Built on github.com/Pratikm19/hubspot-mcp — the first HubSpot connector in the
 | Write to CRM | Log notes, update properties, move lifecycle stages |
 | Pipeline health | Deal risk flags, push counts, missing contacts on deals |
 | Sequence audit | Step-level dropoff, reply rates, sequences to deactivate |
-| Morning briefing | Daily RevOps digest — pipeline, contacts, sequences in one output |
+| Morning briefing | Daily RevOps digest — pipeline and contacts in one output |
 
 ---
 
@@ -46,11 +69,13 @@ show me all HubSpot deals where num_notes is 0 and dealstage is not closedwon or
 
 Find your best-fit prospects. Ignore the rest.
 
+> Requires contacts imported with jobtitle, numberofemployees, and industry fields populated. Returns empty on portals without enriched contact data.
+
 ```
 find all HubSpot contacts from companies with more than 50 employees where lifecyclestage is lead
 ```
 ```
-show me all HubSpot companies in the SaaS industry with no associated deal
+show me all HubSpot companies in the [industry] industry with no associated deal
 ```
 ```
 find HubSpot contacts with job title containing VP or Director where hubspot_owner_id is not set
@@ -67,6 +92,8 @@ which HubSpot companies have more than 3 contacts but no open deal
 ## Churn & Lifecycle
 
 Know who is slipping before they send the cancellation email.
+
+> Requires contacts with lifecycle stage set and activity logged. Returns empty on portals with no historical activity.
 
 ```
 show me all HubSpot contacts where lifecyclestage is customer and notes_last_updated is before [30 days ago date as YYYY-MM-DD]
@@ -89,6 +116,8 @@ which HubSpot customers have an open support ticket and no recent sales touchpoi
 ## Prospecting & Outbound
 
 Work smarter on outbound. Let the CRM tell you who to call.
+
+> Requires populated email activity data. hs_email_last_open_date will be null on portals without HubSpot email sequences or marketing emails active.
 
 ```
 find all HubSpot companies in [industry] with open deals where amount is less than 10000
@@ -134,6 +163,8 @@ show me my top 10 HubSpot open deals by amount with dealstage and notes_last_upd
 
 Find the gaps where pipeline silently disappears.
 
+> Requires closed lost deals and deal history. Returns empty on portals with no closed lost deals or no stage change history.
+
 ```
 show me all HubSpot deals that were moved backwards in stage in the last 30 days
 ```
@@ -176,17 +207,18 @@ update the closedate on HubSpot deal ID [deal_id] to [YYYY-MM-DD]
 
 ## RevOps Morning Briefing
 
-Run this once daily to get a full RevOps digest in under 60 seconds. Works as a scheduled Meerkats agent or manually from the terminal.
+Run this once daily to get a RevOps digest from the terminal.
+
+> Note: HubSpot MCP does not expose sequence performance data. The stale deals and quiet customers portions work. The sequence audit portion will return empty — remove it from your prompt if you want a cleaner output.
 
 **What it surfaces:**
 - Deals with no activity in 14+ days
 - Customers not contacted in 30+ days
 - Leads stuck in MQL for 30+ days
 - Deals closing this month with no next step
-- Sequences with 0 replies in the last 14 days
 
 ```
-Run my HubSpot RevOps morning briefing — surface stale deals, quiet customers, stuck MQLs, and underperforming sequences. Output as a prioritised action list.
+Run my HubSpot RevOps morning briefing — surface stale deals, quiet customers, and stuck MQLs. Output as a prioritised action list.
 ```
 
 ---
@@ -220,8 +252,8 @@ Each prompt category maps to a Pipeline OS module — the full HubSpot-native au
 |---|---|
 | Pipeline Health | M13 — Pipeline Hygiene Engine |
 | ICP Qualification | M12 — ICP Scoring Engine |
-| Churn & Lifecycle | M10 — Customer Lifecycle Engine |
-| Prospecting & Outbound | M16 — Sales Nav Lead Engine |
+| Churn and Lifecycle | M10 — Customer Lifecycle Engine |
+| Prospecting and Outbound | M16 — Sales Nav Lead Engine |
 | Deal Reviews | M13 — Revenue Forecast Model |
 | Revenue Leak Detection | M10 — Revenue Leak Finder |
 
